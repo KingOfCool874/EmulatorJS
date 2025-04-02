@@ -34,7 +34,7 @@
                 color: #ddd;
             }
 
-            #game-select {
+            #game-select, #load-game-btn {
                 padding: 10px;
                 font-family: monospace;
                 font-weight: bold;
@@ -44,9 +44,10 @@
                 border-radius: 0.4em;
                 border: 1px solid #555;
                 cursor: pointer;
+                margin-top: 10px;
             }
 
-            #game-select:hover {
+            #game-select:hover, #load-game-btn:hover {
                 background-color: #666;
                 color: #ddd;
             }
@@ -71,28 +72,30 @@
             <option value="roms/games/doom2.gba">Doom II</option>
             <option value="roms/games/doom1.gba">Doom</option>
         </select>
+        <button id="load-game-btn">Load Selected Game</button>
         
         <script>
             document.getElementById("file-input").onchange = function(event) {
                 loadGame(URL.createObjectURL(event.target.files[0]), event.target.files[0].name);
             };
             
-            document.getElementById("game-select").onchange = function(event) {
-                if (event.target.value) {
-                    loadGame(event.target.value, event.target.options[event.target.selectedIndex].text);
+            document.getElementById("load-game-btn").onclick = function() {
+                const gameSelect = document.getElementById("game-select");
+                if (gameSelect.value) {
+                    loadGame(gameSelect.value, gameSelect.options[gameSelect.selectedIndex].text);
                 }
             };
 
             function loadGame(url, name) {
+                document.body.innerHTML = "";
                 const div = document.createElement("div");
                 const sub = document.createElement("div");
                 const script = document.createElement("script");
 
                 sub.id = "game";
                 div.id = "display";
-                document.body.innerHTML = "";
-                div.appendChild(sub);
                 document.body.appendChild(div);
+                div.appendChild(sub);
 
                 window.EJS_player = "#game";
                 window.EJS_gameName = name;
